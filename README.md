@@ -11,13 +11,13 @@ Configuring goes through secedit, auditpol and reg add. Nothing more.
 To check changes you can use [AuditTAP](https://github.com/fbprogmbh/Audit-Test-Automation)
 
 **10**
-"Isolated" variant of configuration. Nothing special :)
+- "Isolated" variant of configuration. Nothing special :)
 
 **laptop_10**
-Configuration for laptops like "10" variant. No RDP, no saving passwords.
+- Configuration for laptops like "10" variant. No RDP, no saving passwords.
 
 **laptop_10_sp**
-Same as previous configuration, but with support of RDP and user can save passwords in system.
+- Same as previous configuration, but with support of RDP and user can save passwords in system.
 
 **Roadmap:**
 - [ ] Add more security changes according with AuditTAP reports and other best practices
