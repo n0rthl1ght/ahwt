@@ -66,31 +66,32 @@ All additional files like secedit templates and others placed in Templates folde
 ## Usage
 
 1. Download files
-2. Choose OS
+2. Start with ```python AHWT.py```
+3. Choose OS
    
    ![image](https://github.com/n0rthl1ght/ahwt/assets/92512883/9944050a-6efb-4bb1-a845-eed1859c4604)
 
-3. Enter the name to your script
+4. Enter the name to your script
 
    ![image](https://github.com/n0rthl1ght/ahwt/assets/92512883/6ef6f64f-d7ff-4c9c-a802-3e988e1ac7ec)
 
-4. Choose mode
+5. Choose mode
    
    ![image](https://github.com/n0rthl1ght/ahwt/assets/92512883/51373b37-c385-40e5-adea-a66be9443935)
 
-5. Choose the level of hardening
+6. Choose the level of hardening
 
    ![image](https://github.com/n0rthl1ght/ahwt/assets/92512883/cf7d3cea-a8e2-4c85-8962-d7ff3fc8209d)
 
-6. Add parameters of additional profiles if you need
+7. Add parameters of additional profiles if you need
 
    ![image](https://github.com/n0rthl1ght/ahwt/assets/92512883/429dd5a9-2388-4d16-a4e6-fc35f71a50e6)
 
-7. Get additional files from Templates and place it with generated script
+8. Get additional files from Templates and place it with generated script
 
     ![image](https://github.com/n0rthl1ght/ahwt/assets/92512883/531edd63-58b0-489f-9a87-12ed33c08e81) -> ![image](https://github.com/n0rthl1ght/ahwt/assets/92512883/3cbdaf57-74c3-4236-9abf-cb9feaf837f1) -> ![image](https://github.com/n0rthl1ght/ahwt/assets/92512883/b1c0e6dc-6942-4bc4-b779-1988c6824f16)
 
-8. Run it on targeted PC
+9. Run it on targeted PC
 
 ***Before applying scripts on real PC test you configurations on VMs***
 
