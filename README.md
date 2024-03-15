@@ -45,7 +45,8 @@ For every operating system were made additional profiles that you can generate s
    - MS Edge
    - Next Generation Security
 
-***ShieldUp mode block all incoming connections, including those in the list of allowed apps setting found in either the Windows Settings app or Control Pane***
+> [!WARNING]
+> ShieldUp mode block all incoming connections, including those in the list of allowed apps setting found in either the Windows Settings app or Control Pane
 
 In manual mode you can check every parameter with description. Description will be translated (Google Translate) to system language if you have internet connection.
 
@@ -61,7 +62,8 @@ All scripts will be ```.bat``` files. I don't like Powershell syntax :)
 
 All additional files like secedit templates and others placed in Templates folder.
 
-***For using EMET for Windows 7 - 8.1 you need to install EMET 5.52***
+> [!NOTE]
+> For using EMET for Windows 7 - 8.1 you need to install EMET 5.52
 
 ## Usage
 
@@ -93,7 +95,8 @@ All additional files like secedit templates and others placed in Templates folde
 
 9. Run it on targeted PC
 
-***Before applying scripts on real PC test you configurations on VMs***
+> [!CAUTION]
+> Before applying scripts on real PC test you configurations on VMs
 
 ### Feel free to post issues
 
