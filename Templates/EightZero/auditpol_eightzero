@@ -1,0 +1,58 @@
+echo Setting Audit Credential Validation
+auditpol /set /subcategory:{0CCE923F-69AE-11D9-BED3-505054503030} /success:enable /failure:enable
+echo Setting Application Group Management
+auditpol /set /subcategory:{0CCE9239-69AE-11D9-BED3-505054503030} /success:enable /failure:enable
+echo Setting Other Account Management Events
+auditpol /set /subcategory:{0CCE923A-69AE-11D9-BED3-505054503030} /success:enable /failure:enable
+echo Setting Security Group Management
+auditpol /set /subcategory:{0CCE9237-69AE-11D9-BED3-505054503030} /success:enable /failure:enable
+echo Setting User Account Management
+auditpol /set /subcategory:{0CCE9235-69AE-11D9-BED3-505054503030} /success:enable /failure:enable
+echo Setting Process Creation
+auditpol /set /subcategory:{0CCE922B-69AE-11D9-BED3-505054503030} /success:enable /failure:disable
+echo Setting Account Lockout
+auditpol /set /subcategory:{0CCE9217-69AE-11D9-BED3-505054503030} /success:disable /failure:enable
+echo Setting Logoff
+auditpol /set /subcategory:{0CCE9216-69AE-11D9-BED3-505054503030} /success:enable /failure:disable
+echo Setting Logon
+auditpol /set /subcategory:{0CCE9215-69AE-11D9-BED3-505054503030} /success:enable /failure:enable
+echo Setting Other Logon/Logoff Events
+auditpol /set /subcategory:{0CCE921C-69AE-11D9-BED3-505054503030} /success:enable /failure:enable
+echo Setting Special Logon
+auditpol /set /subcategory:{0CCE921B-69AE-11D9-BED3-505054503030} /success:enable /failure:disable
+echo Setting Detailed File Share
+auditpol /set /subcategory:{0CCE9244-69AE-11D9-BED3-505054503030} /success:disable /failure:enable
+echo Setting File Share
+auditpol /set /subcategory:{0CCE9224-69AE-11D9-BED3-505054503030} /success:enable /failure:enable
+echo Setting File System
+auditpol /set /subcategory:{0CCE921D-69AE-11D9-BED3-505054503030} /success:disable /failure:enable
+echo Setting Handle Manipulation
+auditpol /set /subcategory:{0CCE9223-69AE-11D9-BED3-505054503030} /success:disable /failure:enable
+echo Setting Other Object Access Events
+auditpol /set /subcategory:{0CCE9227-69AE-11D9-BED3-505054503030} /success:enable /failure:enable
+echo Setting Registry
+auditpol /set /subcategory:{0CCE921E-69AE-11D9-BED3-505054503030} /success:disable /failure:enable
+echo Setting Removable Storage
+auditpol /set /subcategory:{0CCE9245-69AE-11D9-BED3-505054503030} /success:enable /failure:enable
+echo Setting Audit Policy Change
+auditpol /set /subcategory:{0CCE922F-69AE-11D9-BED3-505054503030} /success:enable /failure:enable
+echo Setting Authentication Policy Change
+auditpol /set /subcategory:{0CCE9230-69AE-11D9-BED3-505054503030} /success:enable /failure:disable
+echo Setting Authorization Policy Change
+auditpol /set /subcategory:{0CCE9231-69AE-11D9-BED3-505054503030} /success:enable /failure:disable
+echo Setting MPSSVC Rule-Level Policy Change
+auditpol /set /subcategory:{0CCE9232-69AE-11D9-BED3-505054503030} /success:enable /failure:enable
+echo Setting Other Policy Change Events
+auditpol /set /subcategory:{0CCE9234-69AE-11D9-BED3-505054503030} /success:disable /failure:enable
+echo Setting Sensitive Privilege Use
+auditpol /set /subcategory:{0CCE9228-69AE-11D9-BED3-505054503030} /success:enable /failure:enable
+echo Setting IPsec Driver
+auditpol /set /subcategory:{0CCE9213-69AE-11D9-BED3-505054503030} /success:enable /failure:enable
+echo Setting Other System Events
+auditpol /set /subcategory:{0CCE9214-69AE-11D9-BED3-505054503030} /success:enable /failure:enable
+echo Setting Security State Change
+auditpol /set /subcategory:{0CCE9210-69AE-11D9-BED3-505054503030} /success:enable /failure:enable
+echo Setting Security System Extension
+auditpol /set /subcategory:{0CCE9211-69AE-11D9-BED3-505054503030} /success:enable /failure:enable
+echo Setting System Integrity
+auditpol /set /subcategory:{0CCE9212-69AE-11D9-BED3-505054503030} /success:enable /failure:enable
