@@ -63,7 +63,7 @@ All scripts will be ```.bat``` files. I don't like Powershell syntax :)
 All additional files like secedit templates and others placed in Templates folder.
 
 > [!NOTE]
-> For using EMET for Windows 7 - 8.1 you need to install EMET 5.52
+> For using EMET for Windows 7 - 8.1 you need to install EMET 5.52 (zip file in release contains it)
 
 ## Usage
 
