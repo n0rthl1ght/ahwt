@@ -96,7 +96,7 @@ All additional files like secedit templates and others placed in Templates folde
 9. Run it on targeted PC
 
 > [!CAUTION]
-> Before applying scripts on real PC test you configurations on VMs
+> Before applying scripts on real PC test your configurations on VMs
 
 ### Feel free to post issues
 
