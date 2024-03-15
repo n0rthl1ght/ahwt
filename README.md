@@ -98,7 +98,7 @@ All additional files like secedit templates and others placed in Templates folde
 > [!CAUTION]
 > Before applying scripts on real PC test your configurations on VMs
 
-### Feel free to post issues
+### Feel free to post any issues
 
 ## Roadmap
 - [ ] Enrich DBs with new parameters for every OS
