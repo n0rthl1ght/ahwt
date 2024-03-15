@@ -2,13 +2,13 @@
 ![image](https://github.com/n0rthl1ght/ahwt/assets/92512883/f60dd952-296c-4574-9129-88e59e66e352)
 
 ## Description
-Program is a script generator with collection parameters and recommendations from CIS Benchmarks and DoD STIGs with some adjusments.
+Program is a script generator with collection of parameters and recommendations from CIS Benchmarks and DoD STIGs with some adjusments.
 
 All parameters placed in databases with the names of the operating systems that are used to. 
 
 Parameters were checked and tested according to official MS documentation and researchers opinion.
 
-Scripts generates in 2 modes - auto and manual
+Scripts generates in 2 modes - auto and manual.
 
 All databases have profiles for each operating system min/med/full which corresponds with Minimum (only level 3 parameters (CIS lvl 2/STIG lvl 3)), Medium (level 2 & 3 parameters (CIS lvl 1 & 2/STIG lvl 2)) and Full (lvl 1-3 parameters).
 
