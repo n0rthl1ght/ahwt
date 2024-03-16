@@ -46,7 +46,7 @@ For every operating system were made additional profiles that you can generate s
    - Next Generation Security
 
 > [!WARNING]
-> ShieldUp mode block all incoming connections, including those in the list of allowed apps setting found in either the Windows Settings app or Control Pane
+> ShieldUp mode block all incoming connections, including those in the list of allowed apps setting found in either the Windows Settings app or Control Panel
 
 In manual mode you can check every parameter with description. Description will be translated (Google Translate) to system language if you have internet connection.
 
@@ -63,7 +63,7 @@ All scripts will be ```.bat``` files. I don't like Powershell syntax :)
 All additional files like secedit templates and others placed in Templates folder.
 
 > [!NOTE]
-> For using EMET for Windows 7 - 8.1 you need to install EMET 5.52 (zip file in release contains it)
+> For using EMET parameters for Windows 7 - 8.1 you need to install EMET 5.52 (zip file in release contains it)
 
 ## Usage
 
