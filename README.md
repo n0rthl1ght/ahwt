@@ -1,7 +1,7 @@
 # AHWT - another hardening tool for Windows operating systems.
 ![image](https://github.com/n0rthl1ght/ahwt/assets/92512883/f60dd952-296c-4574-9129-88e59e66e352)
 
-## Description
+## Description (on [RUS](https://github.com/n0rthl1ght/ahwt/blob/main/README_RU.md))
 Program is a script generator with collection of parameters and recommendations from CIS Benchmarks and DoD STIGs with some adjusments.
 
 All parameters placed in databases with the names of the operating systems that are used to. 
