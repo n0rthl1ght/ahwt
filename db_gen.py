@@ -582,6 +582,861 @@ def ng_reg():
                         break
                     case _:
                         print('Invalid input. Input must be "y" or "n" \n')
+                        
+                        
+def iexplore_reg():
+           
+    if any(keyword in str(db_file) for keyword in ['xp', 'vista','seven', 'eightzero', 'eightone', 'ten']):     
+        print("Do you want to add Internet Explorer registry values?")
+        while True:
+            iexplore_input = str(input("\n Add (y/n)?: "))
+            match iexplore_input:
+                case 'y':
+                    with open(filename + ".bat", 'a') as bat_file:
+                        bat_file.write(f'\necho Adding Internet Explorer values... \n')
+                    while True:
+                        show_input = str(input("\n Show the parameters (y/n)?: "))
+                        match show_input:
+                            case 'n':
+
+                                if any(keyword in str(db_file) for keyword in ['xp']):
+                                    while True:
+                                        choose_input = str(input("\nWhat version of IE you want to harden? (ie6/ie7/ie8)?: "))
+                                        match choose_input:
+                                            case 'ie6':
+                                                with sqlite3.connect(db_file) as sqlite_conn:
+                                                    sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie6')""")
+                                                    sql_cursor = sqlite_conn.execute(sql_request)
+                                                    for record in sql_cursor:         
+                                                        record_value = record
+                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                break
+                                            case 'ie7':
+                                                with sqlite3.connect(db_file) as sqlite_conn:
+                                                    sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie6', 'ie7')""")
+                                                    sql_cursor = sqlite_conn.execute(sql_request)
+                                                    for record in sql_cursor:         
+                                                        record_value = record
+                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                break
+                                            case 'ie8':
+                                                with sqlite3.connect(db_file) as sqlite_conn:
+                                                    sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie6', 'ie7', 'ie8')""")
+                                                    sql_cursor = sqlite_conn.execute(sql_request)
+                                                    for record in sql_cursor:         
+                                                        record_value = record
+                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                break
+                                            case _:
+                                                print('Invalid input. Input must be "ie6", "ie7" or "ie8" \n')
+                                if any(keyword in str(db_file) for keyword in ['vista']):
+                                    while True:
+                                        choose_input = str(input("\nWhat version of IE you want to harden? (ie7/ie8/ie9)?: "))
+                                        match choose_input:
+                                            case 'ie7':
+                                                with sqlite3.connect(db_file) as sqlite_conn:
+                                                    sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie7')""")
+                                                    sql_cursor = sqlite_conn.execute(sql_request)
+                                                    for record in sql_cursor:         
+                                                        record_value = record
+                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                break
+                                            case 'ie8':
+                                                with sqlite3.connect(db_file) as sqlite_conn:
+                                                    sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie7', 'ie8')""")
+                                                    sql_cursor = sqlite_conn.execute(sql_request)
+                                                    for record in sql_cursor:         
+                                                        record_value = record
+                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                break
+                                            case 'ie9':
+                                                with sqlite3.connect(db_file) as sqlite_conn:
+                                                    sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie7', 'ie8', 'ie9')""")
+                                                    sql_cursor = sqlite_conn.execute(sql_request)
+                                                    for record in sql_cursor:         
+                                                        record_value = record
+                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                break
+                                            case _:
+                                                print('Invalid input. Input must be "ie7", "ie8" or "ie9" \n')
+                                                
+                                if any(keyword in str(db_file) for keyword in ['seven']):
+                                    while True:
+                                        choose_input = str(input("\nWhat version of IE you want to harden? (ie8/ie9/ie10/ie11)?: "))
+                                        match choose_input:
+                                            case 'ie8':
+                                                with sqlite3.connect(db_file) as sqlite_conn:
+                                                    sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie8')""")
+                                                    sql_cursor = sqlite_conn.execute(sql_request)
+                                                    for record in sql_cursor:         
+                                                        record_value = record
+                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                break
+                                            case 'ie9':
+                                                with sqlite3.connect(db_file) as sqlite_conn:
+                                                    sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie8', 'ie9')""")
+                                                    sql_cursor = sqlite_conn.execute(sql_request)
+                                                    for record in sql_cursor:         
+                                                        record_value = record
+                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                break
+                                            case 'ie10':
+                                                with sqlite3.connect(db_file) as sqlite_conn:
+                                                    sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie8', 'ie9', 'ie10')""")
+                                                    sql_cursor = sqlite_conn.execute(sql_request)
+                                                    for record in sql_cursor:         
+                                                        record_value = record
+                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                break
+                                            case 'ie11':
+                                                with sqlite3.connect(db_file) as sqlite_conn:
+                                                    sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie8', 'ie9', 'ie10', 'ie11')""")
+                                                    sql_cursor = sqlite_conn.execute(sql_request)
+                                                    for record in sql_cursor:         
+                                                        record_value = record
+                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                break
+                                            case _:
+                                                print('Invalid input. Input must be "ie8", "ie9", "ie10" or "ie11" \n')
+                                                
+                                if any(keyword in str(db_file) for keyword in ['eightzero']):
+                                    while True:
+                                        choose_input = str(input("\nWhat version of IE you want to harden? (ie10/ie11)?: "))
+                                        match choose_input:
+                                            case 'ie10':
+                                                with sqlite3.connect(db_file) as sqlite_conn:
+                                                    sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie10')""")
+                                                    sql_cursor = sqlite_conn.execute(sql_request)
+                                                    for record in sql_cursor:         
+                                                        record_value = record
+                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                break
+                                            case 'ie11':
+                                                with sqlite3.connect(db_file) as sqlite_conn:
+                                                    sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie10', 'ie11')""")
+                                                    sql_cursor = sqlite_conn.execute(sql_request)
+                                                    for record in sql_cursor:         
+                                                        record_value = record
+                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                break
+                                            case _:
+                                                print('Invalid input. Input must be "ie10" or "ie11" \n')
+                                                
+                                if any(keyword in str(db_file) for keyword in ['eightone']):
+                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie11')""")
+                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                        for record in sql_cursor:         
+                                            record_value = record
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                
+                                if any(keyword in str(db_file) for keyword in ['ten']):
+                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie11')""")
+                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                        for record in sql_cursor:         
+                                            record_value = record
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                
+                                break
+
+                            case 'y':
+                                if internet() is False or "en" in current_lang_code:
+                                    if any(keyword in str(db_file) for keyword in ['xp']):
+                                        while True:
+                                            choose_input = str(input("\nWhat version of IE you want to harden? (ie6/ie7/ie8)?: "))
+                                            match choose_input:
+                                                case 'ie6':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie6')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case 'ie7':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie6', 'ie7')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case 'ie8':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie6', 'ie7', 'ie8')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case _:
+                                                    print('Invalid input. Input must be "ie6", "ie7" or "ie8" \n')
+                                    if any(keyword in str(db_file) for keyword in ['vista']):
+                                        while True:
+                                            choose_input = str(input("\nWhat version of IE you want to harden? (ie7/ie8/ie9)?: "))
+                                            match choose_input:
+                                                case 'ie7':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie7')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case 'ie8':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie7', 'ie8')
+                                                                    AND profile IN ("{choose_input}")""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case 'ie9':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie7', 'ie8', 'ie9')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case _:
+                                                    print('Invalid input. Input must be "ie7", "ie8" or "ie9" \n')
+                                                    
+                                    if any(keyword in str(db_file) for keyword in ['seven']):
+                                        while True:
+                                            choose_input = str(input("\nWhat version of IE you want to harden? (ie8/ie9/ie10/ie11)?: "))
+                                            match choose_input:
+                                                case 'ie8':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie8')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case 'ie9':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie8', 'ie9')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case 'ie10':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie8', 'ie9', 'ie10')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case 'ie11':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie8', 'ie9', 'ie10', 'ie11')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case _:
+                                                    print('Invalid input. Input must be "ie8", "ie9", "ie10" or "ie11" \n')
+                                                    
+                                    if any(keyword in str(db_file) for keyword in ['eightzero']):
+                                        while True:
+                                            choose_input = str(input("\nWhat version of IE you want to harden? (ie10/ie11)?: "))
+                                            match choose_input:
+                                                case 'ie10':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie10')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case 'ie11':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie10', 'ie11')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case _:
+                                                    print('Invalid input. Input must be "ie10" or "ie11" \n')
+                                                    
+                                    if any(keyword in str(db_file) for keyword in ['eightone']):
+                                        with sqlite3.connect(db_file) as sqlite_conn:
+                                            sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie11')""")
+                                            sql_cursor = sqlite_conn.execute(sql_request)
+                                            for record in sql_cursor:         
+                                                record_value = record
+                                                print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                                while True:
+                                                    answer_input = str(input("Apply (y/n)?: "))
+                                                    match answer_input:
+                                                        case 'y':
+                                                            with open(filename + ".bat", 'a') as bat_file:
+                                                                bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                            break
+                                                        case 'n':
+                                                            print("Skipping this register value...\n")
+                                                            break
+                                                        case _:
+                                                            print('Invalid input. Input must be "y" or "n"\n')
+                                                    
+                                    if any(keyword in str(db_file) for keyword in ['ten']):
+                                        with sqlite3.connect(db_file) as sqlite_conn:
+                                            sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie11')""")
+                                            sql_cursor = sqlite_conn.execute(sql_request)
+                                            for record in sql_cursor:         
+                                                record_value = record
+                                                print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                                while True:
+                                                    answer_input = str(input("Apply (y/n)?: "))
+                                                    match answer_input:
+                                                        case 'y':
+                                                            with open(filename + ".bat", 'a') as bat_file:
+                                                                bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                            break
+                                                        case 'n':
+                                                            print("Skipping this register value...\n")
+                                                            break
+                                                        case _:
+                                                            print('Invalid input. Input must be "y" or "n"\n')
+                                    
+                                else:
+                                    if any(keyword in str(db_file) for keyword in ['xp']):
+                                        while True:
+                                            choose_input = str(input("\nWhat version of IE you want to harden? (ie6/ie7/ie8)?: "))
+                                            match choose_input:
+                                                case 'ie6':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie6')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {translated} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case 'ie7':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie6', 'ie7')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {translated} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case 'ie8':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie6', 'ie7', 'ie8')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {translated} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case _:
+                                                    print('Invalid input. Input must be "ie6", "ie7" or "ie8" \n')
+                                    if any(keyword in str(db_file) for keyword in ['vista']):
+                                        while True:
+                                            choose_input = str(input("\nWhat version of IE you want to harden? (ie7/ie8/ie9)?: "))
+                                            match choose_input:
+                                                case 'ie7':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie7')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {translated} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case 'ie8':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie7', 'ie8')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {translated} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case 'ie9':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie7', 'ie8', 'ie9')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {translated} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case _:
+                                                    print('Invalid input. Input must be "ie7", "ie8" or "ie9" \n')
+                                                    
+                                    if any(keyword in str(db_file) for keyword in ['seven']):
+                                        while True:
+                                            choose_input = str(input("\nWhat version of IE you want to harden? (ie8/ie9/ie10/ie11)?: "))
+                                            match choose_input:
+                                                case 'ie8':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie8')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {translated} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case 'ie9':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie8', 'ie9')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {translated} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case 'ie10':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie8', 'ie9', 'ie10')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {translated} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case 'ie11':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie8', 'ie9', 'ie10', 'ie11')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {translated} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case _:
+                                                    print('Invalid input. Input must be "ie8", "ie9", "ie10" or "ie11" \n')
+                                                    
+                                    if any(keyword in str(db_file) for keyword in ['eightzero']):
+                                        while True:
+                                            choose_input = str(input("\nWhat version of IE you want to harden? (ie10/ie11)?: "))
+                                            match choose_input:
+                                                case 'ie10':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie10')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {translated} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case 'ie11':
+                                                    with sqlite3.connect(db_file) as sqlite_conn:
+                                                        sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie10', 'ie11')""")
+                                                        sql_cursor = sqlite_conn.execute(sql_request)
+                                                        for record in sql_cursor:         
+                                                            record_value = record
+                                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {translated} \n')
+                                                            while True:
+                                                                answer_input = str(input("Apply (y/n)?: "))
+                                                                match answer_input:
+                                                                    case 'y':
+                                                                        with open(filename + ".bat", 'a') as bat_file:
+                                                                            bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                            bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                        break
+                                                                    case 'n':
+                                                                        print("Skipping this register value...\n")
+                                                                        break
+                                                                    case _:
+                                                                        print('Invalid input. Input must be "y" or "n"\n')
+                                                    break
+                                                case _:
+                                                    print('Invalid input. Input must be "ie10" or "ie11" \n')
+                                                    
+                                    if any(keyword in str(db_file) for keyword in ['eightone']):
+                                        with sqlite3.connect(db_file) as sqlite_conn:
+                                            sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie11')""")
+                                            sql_cursor = sqlite_conn.execute(sql_request)
+                                            for record in sql_cursor:         
+                                                record_value = record
+                                                translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                                print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {translated} \n')
+                                                while True:
+                                                    answer_input = str(input("Apply (y/n)?: "))
+                                                    match answer_input:
+                                                        case 'y':
+                                                            with open(filename + ".bat", 'a') as bat_file:
+                                                                bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                            break
+                                                        case 'n':
+                                                            print("Skipping this register value...\n")
+                                                            break
+                                                        case _:
+                                                            print('Invalid input. Input must be "y" or "n"\n')
+                                                    
+                                    if any(keyword in str(db_file) for keyword in ['ten']):
+                                        with sqlite3.connect(db_file) as sqlite_conn:
+                                            sql_request = ("""SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('ie11')""")
+                                            sql_cursor = sqlite_conn.execute(sql_request)
+                                            for record in sql_cursor:         
+                                                record_value = record
+                                                translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                                print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {translated} \n')
+                                                while True:
+                                                    answer_input = str(input("Apply (y/n)?: "))
+                                                    match answer_input:
+                                                        case 'y':
+                                                            with open(filename + ".bat", 'a') as bat_file:
+                                                                bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                                bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                            break
+                                                        case 'n':
+                                                            print("Skipping this register value...\n")
+                                                            break
+                                                        case _:
+                                                            print('Invalid input. Input must be "y" or "n"\n')
+                                                            
+                                break
+                            case _:
+                                print('Invalid input. Input must be "y" or "n"\n')
+                    break
+                case 'n':
+                    print("Skipping Internet Explorer register values... \n")
+                    break
+                case _:
+                    print('Invalid input. Input must be "y" or "n" \n')
 
 
 def manual_generation():
@@ -656,6 +1511,7 @@ def manual_generation():
             edge_reg()
             firewall_reg()
             ng_reg()
+            iexplore_reg()
         else:
             for record in sql_cursor:         
                 record_value = record
@@ -673,6 +1529,7 @@ def manual_generation():
             edge_reg()
             firewall_reg()
             ng_reg()
+            iexplore_reg()
 
             
             
@@ -682,7 +1539,7 @@ def auto_generation():
         match auto_profile:
             case 'full':
                 with sqlite3.connect(db_file) as sqlite_conn:
-                    sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile NOT IN ('BitLocker', 'Defender', 'Edge', 'Firewall', 'Next Generation')"""
+                    sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile NOT IN ('BitLocker', 'Defender', 'Edge', 'Firewall', 'Next Generation', 'ie6', 'ie7', 'ie8', 'ie9', 'ie10', 'ie11')"""
                     sql_cursor = sqlite_conn.execute(sql_request)
                     for record in sql_cursor:         
                         record_value = record
@@ -699,10 +1556,11 @@ def auto_generation():
                 edge_reg()
                 firewall_reg()
                 ng_reg()
+                iexplore_reg()
                 break
             case 'med':
                 with sqlite3.connect(db_file) as sqlite_conn:
-                    sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile NOT IN ('BitLocker', 'Defender', 'Edge', 'Firewall', 'Next Generation', 'Full')"""
+                    sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile NOT IN ('BitLocker', 'Defender', 'Edge', 'Firewall', 'Next Generation', 'Full', 'ie6', 'ie7', 'ie8', 'ie9', 'ie10', 'ie11')"""
                     sql_cursor = sqlite_conn.execute(sql_request)
                     for record in sql_cursor:         
                         record_value = record
@@ -719,10 +1577,11 @@ def auto_generation():
                     edge_reg()
                     firewall_reg()
                     ng_reg()
+                    iexplore_reg()
                 break
             case 'min':
                 with sqlite3.connect(db_file) as sqlite_conn:
-                    sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile NOT IN ('BitLocker', 'Defender', 'Edge', 'Firewall', 'Next Generation', 'Full', 'Med')"""
+                    sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile NOT IN ('BitLocker', 'Defender', 'Edge', 'Firewall', 'Next Generation', 'Full', 'Med', 'ie6', 'ie7', 'ie8', 'ie9', 'ie10', 'ie11')"""
                     sql_cursor = sqlite_conn.execute(sql_request)
                     for record in sql_cursor:         
                         record_value = record
@@ -739,6 +1598,7 @@ def auto_generation():
                     edge_reg()
                     firewall_reg()
                     ng_reg()
+                    iexplore_reg()
                 break
             case _:
                 print('Invalid input. Input must be "min", "med" or "full" \n')
@@ -747,7 +1607,7 @@ def auto_generation():
 def addon_gen():
     if any(keyword in str(db_file) for keyword in ['xp', 'vista']):
         while True:
-            addon_profile = str(input("Enter the type of additional parameters you want (firewall/none): "))
+            addon_profile = str(input("Enter the type of additional parameters you want (firewall/iexplorer/none): "))
             match addon_profile:
                 case 'firewall':
                     with open(filename + ".bat", 'w') as bat_file:
@@ -760,14 +1620,25 @@ def addon_gen():
                         bat_file.write(f'echo Mission Accomplished! :)\n')
                         bat_file.write(f'pause\n')
                     break
+                case 'iexplorer':
+                    with open(filename + ".bat", 'w') as bat_file:
+                        bat_file.write("@echo off\n\n")
+                        bat_file.write("echo Creating restore point...\n")
+                        bat_file.write(f'wmic.exe /Namespace:\\\\root\default Path SystemRestore Call CreateRestorePoint "Before install the AHWT {filename} script", 100, 7\n')
+                    iexplore_reg()
+                    print(f"Your .bat script saved: {abs_dir}")
+                    with open(filename + ".bat", 'a') as bat_file:
+                        bat_file.write(f'echo Mission Accomplished! :)\n')
+                        bat_file.write(f'pause\n')
+                    break
                 case 'none':
                     print("Have a nice day! Good luck!")
                     break
                 case _:
-                    print('Invalid input. Input must be "Firewall" or "None" \n')
+                    print('Invalid input. Input must be "firewall", "iexplorer" or "none" \n')
     if any(keyword in str(db_file) for keyword in ['seven', 'eightzero', 'eightone']):
         while True:
-            addon_profile = str(input("Enter the type of additional parameters you want (bitlocker/defender/firewall/none): "))
+            addon_profile = str(input("Enter the type of additional parameters you want (bitlocker/defender/firewall/iexplorer/none): "))
             match addon_profile:
                 case 'bitlocker':
                     with open(filename + ".bat", 'w') as bat_file:
@@ -802,14 +1673,25 @@ def addon_gen():
                         bat_file.write(f'echo Mission Accomplished! :)\n')
                         bat_file.write(f'pause\n')
                     break
+                case 'iexplorer':
+                    with open(filename + ".bat", 'w') as bat_file:
+                        bat_file.write("@echo off\n\n")
+                        bat_file.write("echo Creating restore point...\n")
+                        bat_file.write(f'wmic.exe /Namespace:\\\\root\default Path SystemRestore Call CreateRestorePoint "Before install the AHWT {filename} script", 100, 7\n')
+                    iexplore_reg()
+                    print(f"Your .bat script saved: {abs_dir}")
+                    with open(filename + ".bat", 'a') as bat_file:
+                        bat_file.write(f'echo Mission Accomplished! :)\n')
+                        bat_file.write(f'pause\n')
+                    break
                 case 'none':
                     print("Have a nice day! Good luck!")
                     break
                 case _:
-                    print('Invalid input. Input must be "bitlocker", "defender", "firewall", or "none" \n')
+                    print('Invalid input. Input must be "bitlocker", "defender", "firewall", "iexplorer" or "none" \n')
     if any(keyword in str(db_file) for keyword in ['ten', 'eleven']):
         while True:
-            addon_profile = str(input("Enter the type of additional parameters you want (bitlocker/defender/edge/firewall/ng/none): "))
+            addon_profile = str(input("Enter the type of additional parameters you want (bitlocker/defender/edge/firewall/ng/iexplorer/none): "))
             match addon_profile:
                 case 'bitlocker':
                     with open(filename + ".bat", 'w') as bat_file:
@@ -866,11 +1748,22 @@ def addon_gen():
                         bat_file.write(f'echo Mission Accomplished! :)\n')
                         bat_file.write(f'pause\n')
                     break
+                case 'iexplorer':
+                    with open(filename + ".bat", 'w') as bat_file:
+                        bat_file.write("@echo off\n\n")
+                        bat_file.write("echo Creating restore point...\n")
+                        bat_file.write(f'wmic.exe /Namespace:\\\\root\default Path SystemRestore Call CreateRestorePoint "Before install the AHWT {filename} script", 100, 7\n')
+                    iexplore_reg()
+                    print(f"Your .bat script saved: {abs_dir}")
+                    with open(filename + ".bat", 'a') as bat_file:
+                        bat_file.write(f'echo Mission Accomplished! :)\n')
+                        bat_file.write(f'pause\n')
+                    break
                 case 'none':
                     print("Have a nice day! Good luck!")
                     break
                 case _:
-                    print('Invalid input. Input must be "bitlocker", "defender", "edge", "firewall", "ng" or "none" \n')
+                    print('Invalid input. Input must be "bitlocker", "defender", "edge", "firewall", "ng", "iexplorer" or "none" \n')
             
 def internet(host="8.8.8.8", port=53, timeout=5):
     """
