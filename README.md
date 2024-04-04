@@ -17,27 +17,33 @@ All databases have profiles for each operating system min/med/full which corresp
 For every operating system were made additional profiles that you can generate separate or after generating the general script:
 1. Windows XP
    - Windows Firewall (ShieldUp mode has separate confirmation)
+   - Internet Explorer (versions 6-8)
 2. Windows Vista
    - Windows Firewall (ShieldUp mode has separate confirmation)
    - Windows Defender
+   - Internet Explorer (versions 7-9)
 3. Windows 7
    - Windows Firewall (ShieldUp mode has separate confirmation)
    - Windows Defender
    - BitLocker
+   - Internet Explorer (versions 8-11)
 4. Windows 8
    - Windows Firewall (ShieldUp mode has separate confirmation)
    - Windows Defender
    - BitLocker
+   - Internet Explorer (versions 10-11)
 5. Windows 8.1
    - Windows Firewall (ShieldUp mode has separate confirmation)
    - Windows Defender
    - BitLocker
+   - Internet Explorer (version 11)
 6. Windows 10
    - Windows Firewall (ShieldUp mode has separate confirmation)
    - Windows Defender
    - BitLocker
    - MS Edge
    - Next Generation Security
+   - Internet Explorer (version 11)
 7. Windows 11
    - Windows Firewall (ShieldUp mode has separate confirmation)
    - Windows Defender
