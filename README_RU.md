@@ -17,27 +17,33 @@
 Для каждой ОС были созданы дополнительные профили, которые можно сгенерировать отдельно либо после генерации основного скрипта:
 1. Windows XP
    - Windows Firewall (Режим ShieldUp имеет отдельное подтверждение)
+   - Internet Explorer (версии 6-8)
 2. Windows Vista
    - Windows Firewall (Режим ShieldUp имеет отдельное подтверждение)
    - Windows Defender
+   - Internet Explorer (версии 7-9)
 3. Windows 7
    - Windows Firewall (Режим ShieldUp имеет отдельное подтверждение)
    - Windows Defender
    - BitLocker
+   - Internet Explorer (версии 8-11)
 4. Windows 8
    - Windows Firewall (Режим ShieldUp имеет отдельное подтверждение)
    - Windows Defender
    - BitLocker
+   - Internet Explorer (версии 10-11)
 5. Windows 8.1
    - Windows Firewall (Режим ShieldUp имеет отдельное подтверждение)
    - Windows Defender
    - BitLocker
+   - Internet Explorer (версия 11)
 6. Windows 10
    - Windows Firewall (Режим ShieldUp имеет отдельное подтверждение)
    - Windows Defender
    - BitLocker
    - MS Edge
    - Next Generation Security
+   - Internet Explorer (версия 11)
 7. Windows 11
    - Windows Firewall (Режим ShieldUp имеет отдельное подтверждение)
    - Windows Defender
