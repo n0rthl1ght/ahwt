@@ -77,6 +77,7 @@ All additional files like secedit templates and others placed in Templates folde
 
 > [!NOTE]
 > For using EMET parameters for Windows 7 - 8.1 you need to install EMET 5.52 (zip file in release contains it)
+> MS Office 2016 parameters used by 2019 & 2021 versions. If you have 2019 or 2021, just use Office 2016 hardening.
 
 ## Usage
 
