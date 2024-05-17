@@ -1632,7 +1632,7 @@ def addon_gen():
                         bat_file.write(f'pause\n')
                     break
                 case 'none':
-                    print("Have a nice day! Good luck!")
+                    print("Returning...")
                     break
                 case _:
                     print('Invalid input. Input must be "firewall", "iexplorer" or "none" \n')
@@ -1685,7 +1685,7 @@ def addon_gen():
                         bat_file.write(f'pause\n')
                     break
                 case 'none':
-                    print("Have a nice day! Good luck!")
+                    print("Returning...")
                     break
                 case _:
                     print('Invalid input. Input must be "bitlocker", "defender", "firewall", "iexplorer" or "none" \n')
@@ -1760,10 +1760,766 @@ def addon_gen():
                         bat_file.write(f'pause\n')
                     break
                 case 'none':
-                    print("Have a nice day! Good luck!")
+                    print("Returning...")
                     break
                 case _:
                     print('Invalid input. Input must be "bitlocker", "defender", "edge", "firewall", "ng", "iexplorer" or "none" \n')
+
+
+def office_gen():  
+    
+    def answer_function():
+        while True:
+            answer_input = str(input("Apply (y/n)?: "))
+            match answer_input:
+                case 'y':
+                    with open(filename + ".bat", 'a') as bat_file:
+                        bat_file.write(f'echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                        bat_file.write(f'reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                    break
+                case 'n':
+                    print("Skipping this register value...\n")
+                    break
+                case _:
+                    print('Invalid input. Input must be "y" or "n"\n')
+               
+                    
+    def answer_function_hkcu():
+        while True:
+            answer_input = str(input("Apply (y/n)?: "))
+            match answer_input:
+                case 'y':
+                    with open(filename + ".bat", 'a') as bat_file:
+                        bat_file.write(f'    echo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                        bat_file.write(f'    reg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                    break
+                case 'n':
+                    print("Skipping this register value...\n")
+                    break
+                case _:
+                    print('Invalid input. Input must be "y" or "n"\n')
+                    
+    
+    def delete_reg():
+        while True:
+            print("Do you want to delete this registry value?")
+            delete_input = str(input("\n Delete (y/n)?: "))
+            match delete_input:
+                case 'y':
+                    with open(filename + ".bat", 'a') as bat_file:
+                        bat_file.write(f'echo Deleting "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                        bat_file.write(f'reg delete "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                    break
+                case 'n':
+                    print("Skipping this register value... \n")
+                    break
+                case _:
+                    print('Invalid input. Input must be "y" or "n" \n')
+                    
+    
+    def delete_reg_hkcu():
+        while True:
+            print("Do you want to delete this registry value?")
+            delete_input = str(input("\n Delete (y/n)?: "))
+            match delete_input:
+                case 'y':
+                    with open(filename + ".bat", 'a') as bat_file:
+                        bat_file.write(f'    echo Deleting "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                        bat_file.write(f'    reg delete "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                    break
+                case 'n':
+                    print("Skipping this register value... \n")
+                    break
+                case _:
+                    print('Invalid input. Input must be "y" or "n" \n')
+    
+    def hkcu_before_param():
+        batch_cycle = """
+        @echo off
+        setlocal enabledelayedexpansion
+
+        for /f "tokens=*" %%a in ('reg query HKU ^| findstr /r /c:"HKEY_USERS\\\\S-1-5-21-[0-9]*-[0-9]*-[0-9]*-[0-9]*"') do (
+            set "user=%%a"
+            set "user=!user:HKEY_USERS=HKU!"
+            echo Found User: !user!
+            
+            """
+        with open(filename + ".bat", 'a') as bat_file:
+            bat_file.writelines(batch_cycle)
+            
+    def hkcu_after_param():
+        batch_cycle = """
+        
+            reg add "!user!\\Software\\Microsoft\\Office\\11.0\\Common" /v QMEnable /t REG_DWORD /d 0 /f
+            if errorlevel 1 (
+                echo An error occurred while adding the parameter for !user!
+                exit /b 1
+            )
+            echo Parameter added for !user!
+        )
+
+        echo All users in HKU have been successfully processed.
+
+        endlocal
+        
+        
+        """
+        with open(filename + ".bat", 'a') as bat_file:
+            bat_file.write(batch_cycle)
+        replace_hkcu()
+    
+    
+    def replace_hkcu():
+        with open(filename + ".bat", 'r') as bat_file:
+            replace_users_key = bat_file.read()
+        
+        updated_users_key = replace_users_key.replace('HKEY_CURRENT_USER', '!user!')
+        
+        with open(filename + ".bat", 'w') as bat_file:
+            bat_file.write(updated_users_key)
+    
+    with open(filename + ".bat", 'w') as bat_file:
+        bat_file.write("@echo off\n\n")
+        bat_file.write("\necho Adding commands...\n\n")
+        
+    while True:
+        restore_choice = str(input("Do you need to create the restore point before applying script? (y/n): "))
+        match restore_choice:
+            case 'y':
+                while True:
+                    os_restore_choice = str(input("Choose the operating system (xp/vista/seven/eight/eightone/ten/eleven): "))
+                    match os_restore_choice:
+                        case 'xp':
+                            with open(filename + ".bat", 'a') as bat_file:
+                                bat_file.write("echo Enabling Restore Point service...\n")
+                                bat_file.write("sc config srservice start= auto\n")
+                                bat_file.write("net start srservice\n")
+                                bat_file.write("echo Creating restore point...\n")
+                                bat_file.write(f'wmic.exe /Namespace:\\\\root\\default Path SystemRestore Call CreateRestorePoint "Before install the AHWT {filename} script", 100, 7\n')
+                                bat_file.write("echo Adding main parameters...\n")
+                            break
+                        case 'vista':
+                            with open(filename + ".bat", 'a') as bat_file:
+                                bat_file.write("echo Creating restore point...\n")
+                                bat_file.write(f'wmic.exe /Namespace:\\\\root\\default Path SystemRestore Call CreateRestorePoint "Before install the AHWT {filename} script", 100, 7\n')
+                                bat_file.write("echo Adding main parameters...\n")
+                            break
+                        case 'seven' | 'eight' | 'eightone' | 'ten' | 'eleven':
+                            with open(filename + ".bat", 'a') as bat_file:
+                                bat_file.write("echo Enabling Restore Point service...\n")
+                                bat_file.write("powershell \"Enable-ComputerRestore -Drive 'C:\\'\"\n")
+                                bat_file.write("echo Creating restore point...\n")
+                                bat_file.write(f'wmic.exe /Namespace:\\\\root\\default Path SystemRestore Call CreateRestorePoint "Before install the AHWT {filename} script", 100, 7\n')
+                                bat_file.write("echo Adding main parameters...\n")
+                            break
+                        case _:
+                            print('Invalid input. Input must be "xp", "vista", "seven", "eight", "eightone", "ten" or "eleven" \n')
+                break   
+            case 'n':
+                print("Skipping creating restore point...")
+                break
+            case _:
+                print('Invalid input. Input must be "y" or "n" \n')
+                
+    while True:
+        office_choice = str(input("Enter the version of MS Office you want to harden (2003/2007/2010/2013/2016/365/none): "))
+        match office_choice:
+            case '2003':
+                while True:
+                    gen_choice = str(input("Auto or Manual generation of .bat script (a/m): "))
+                    match gen_choice:
+                        case 'a':
+                            hkcu_before_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2003', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                for record in sql_cursor:         
+                                    record_value = record
+                                    if ('HKEY_CURRENT_USER' in record_value[0]):
+                                        if ('OutlookSecureTempFolder' in record_value[1]):
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Deleting "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                                bat_file.write(f'\treg delete "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                        else:
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                bat_file.write(f'\treg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                            hkcu_after_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2003', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                for record in sql_cursor:         
+                                    record_value = record
+                                    if ('HKEY_LOCAL_MACHINE' in record_value[0]):
+                                        if ('OutlookSecureTempFolder' in record_value[1]):
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Deleting "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                                bat_file.write(f'\treg delete "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                        else:
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                bat_file.write(f'\treg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                            print(f"Your .bat script saved: {abs_dir}")
+                            with open(filename + ".bat", 'a') as bat_file:
+                                bat_file.write(f'echo Mission Accomplished! :)\n')
+                                bat_file.write(f'pause\n')
+                            break
+                        case 'm':
+                            hkcu_before_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2003', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                if internet() is False or "en" in current_lang_code:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_LOCAL_MACHINE' not in record_value[0]):
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                        if ('HKEY_CURRENT_USER' in record_value[0]):
+                                            if ('OutlookSecureTempFolder' in record_value[1]):
+                                                delete_reg_hkcu()
+                                            else:
+                                                answer_function_hkcu()
+                                else:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_LOCAL_MACHINE' not in record_value[0]):
+                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {translated} \n')
+                                        if ('HKEY_CURRENT_USER' in record_value[0]):
+                                            if ('OutlookSecureTempFolder' in record_value[1]):
+                                                delete_reg_hkcu()
+                                            else:
+                                                answer_function_hkcu()
+                            hkcu_after_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2003', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                if internet() is False or "en" in current_lang_code:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_CURRENT_USER' not in record_value[0]):
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                        if ('HKEY_LOCAL_MACHINE' in record_value[0]):
+                                            if ('OutlookSecureTempFolder' in record_value[1]):
+                                                delete_reg()
+                                            else:
+                                                answer_function()
+                                else:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_CURRENT_USER' not in record_value[0]):
+                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {translated} \n')
+                                        if ('HKEY_LOCAL_MACHINE' in record_value[0]):
+                                            if ('OutlookSecureTempFolder' in record_value[1]):
+                                                delete_reg()
+                                            else:
+                                                answer_function()
+                            print(f"Your .bat script saved: {abs_dir}")
+                            with open(filename + ".bat", 'a') as bat_file:
+                                bat_file.write(f'echo Mission Accomplished! :)\n')
+                                bat_file.write(f'pause\n')
+                            break
+                        case _:
+                            print('Invalid input. Input must be "a" or "m" \n')
+            case '2007':
+                while True:
+                    gen_choice = str(input("Auto or Manual generation of .bat script (a/m): "))
+                    match gen_choice:
+                        case 'a':
+                            hkcu_before_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2007', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                for record in sql_cursor:         
+                                    record_value = record
+                                    if ('HKEY_CURRENT_USER' in record_value[0]):
+                                        if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2'])):
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Deleting "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                                bat_file.write(f'\treg delete "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                        else:
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                bat_file.write(f'\treg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                            hkcu_after_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2007', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                for record in sql_cursor:         
+                                    record_value = record
+                                    if ('HKEY_LOCAL_MACHINE' in record_value[0]):
+                                        if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2'])):
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Deleting "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                                bat_file.write(f'\treg delete "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                        else:
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                bat_file.write(f'\treg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                            print(f"Your .bat script saved: {abs_dir}")
+                            with open(filename + ".bat", 'a') as bat_file:
+                                bat_file.write(f'echo Mission Accomplished! :)\n')
+                                bat_file.write(f'pause\n')
+                            break
+                        case 'm':
+                            hkcu_before_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2007', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                if internet() is False or "en" in current_lang_code:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_LOCAL_MACHINE' not in record_value[0]):
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                        if ('HKEY_CURRENT_USER' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2'])):
+                                                delete_reg_hkcu()
+                                            else:
+                                                answer_function_hkcu()
+                                else:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_LOCAL_MACHINE' not in record_value[0]):
+                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {translated} \n')
+                                        if ('HKEY_CURRENT_USER' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2'])):
+                                                delete_reg_hkcu()
+                                            else:
+                                                answer_function_hkcu()
+                            hkcu_after_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2007', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                if internet() is False or "en" in current_lang_code:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_CURRENT_USER' not in record_value[0]):
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                        if ('HKEY_LOCAL_MACHINE' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2'])):
+                                                delete_reg()
+                                            else:
+                                                answer_function()
+                                else:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_CURRENT_USER' not in record_value[0]):
+                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {translated} \n')
+                                        if ('HKEY_LOCAL_MACHINE' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2'])):
+                                                delete_reg()
+                                            else:
+                                                answer_function()
+                            print(f"Your .bat script saved: {abs_dir}")
+                            with open(filename + ".bat", 'a') as bat_file:
+                                bat_file.write(f'echo Mission Accomplished! :)\n')
+                                bat_file.write(f'pause\n')
+                            break
+                        case _:
+                            print('Invalid input. Input must be "a" or "m" \n')
+            case '2010':
+                while True:
+                    gen_choice = str(input("Auto or Manual generation of .bat script (a/m): "))
+                    match gen_choice:
+                        case 'a':
+                            hkcu_before_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2010', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                for record in sql_cursor:         
+                                    record_value = record
+                                    if ('HKEY_CURRENT_USER' in record_value[0]):
+                                        if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2'])):
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Deleting "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                                bat_file.write(f'\treg delete "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                        else:
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                bat_file.write(f'\treg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                            hkcu_after_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2010', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                for record in sql_cursor:         
+                                    record_value = record
+                                    if ('HKEY_LOCAL_MACHINE' in record_value[0]):
+                                        if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2'])):
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Deleting "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                                bat_file.write(f'\treg delete "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                        else:
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                bat_file.write(f'\treg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                            print(f"Your .bat script saved: {abs_dir}")
+                            with open(filename + ".bat", 'a') as bat_file:
+                                bat_file.write(f'echo Mission Accomplished! :)\n')
+                                bat_file.write(f'pause\n')
+                            break
+                        case 'm':
+                            hkcu_before_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2010', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                if internet() is False or "en" in current_lang_code:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_LOCAL_MACHINE' not in record_value[0]):
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                        if ('HKEY_CURRENT_USER' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2'])):
+                                                delete_reg_hkcu()
+                                            else:
+                                                answer_function_hkcu()
+                                else:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_LOCAL_MACHINE' not in record_value[0]):
+                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                        if ('HKEY_CURRENT_USER' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2'])):
+                                                delete_reg_hkcu()
+                                            else:
+                                                answer_function_hkcu()
+                            hkcu_after_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2010', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                if internet() is False or "en" in current_lang_code:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_CURRENT_USER' not in record_value[0]):
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                        if ('HKEY_LOCAL_MACHINE' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2'])):
+                                                delete_reg()
+                                            else:
+                                                answer_function()
+                                else:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_CURRENT_USER' not in record_value[0]):
+                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                        if ('HKEY_LOCAL_MACHINE' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2'])):
+                                                delete_reg()
+                                            else:
+                                                answer_function()
+                            print(f"Your .bat script saved: {abs_dir}")
+                            with open(filename + ".bat", 'a') as bat_file:
+                                bat_file.write(f'echo Mission Accomplished! :)\n')
+                                bat_file.write(f'pause\n')
+                            break
+                        case _:
+                            print('Invalid input. Input must be "a" or "m" \n')
+            case '2013':
+                while True:
+                    gen_choice = str(input("Auto or Manual generation of .bat script (a/m): "))
+                    match gen_choice:
+                        case 'a':
+                            hkcu_before_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2013', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                for record in sql_cursor:         
+                                    record_value = record
+                                    if ('HKEY_CURRENT_USER' in record_value[0]):
+                                        if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2', 'allowdde'])):
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Deleting "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                                bat_file.write(f'\treg delete "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                        else:
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                bat_file.write(f'\treg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                            hkcu_after_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2013', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                for record in sql_cursor:         
+                                    record_value = record
+                                    if ('HKEY_LOCAL_MACHINE' in record_value[0]):
+                                        if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2', 'allowdde'])):
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Deleting "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                                bat_file.write(f'\treg delete "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                        else:
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                bat_file.write(f'\treg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                            print(f"Your .bat script saved: {abs_dir}")
+                            with open(filename + ".bat", 'a') as bat_file:
+                                bat_file.write(f'echo Mission Accomplished! :)\n')
+                                bat_file.write(f'pause\n')
+                            break
+                        case 'm':
+                            hkcu_before_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2013', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                if internet() is False or "en" in current_lang_code:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_LOCAL_MACHINE' not in record_value[0]):
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                        if ('HKEY_CURRENT_USER' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2', 'allowdde'])):
+                                                delete_reg_hkcu()
+                                            else:
+                                                answer_function_hkcu()
+                                else:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_LOCAL_MACHINE' not in record_value[0]):
+                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {translated} \n')
+                                        if ('HKEY_CURRENT_USER' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2', 'allowdde'])):
+                                                delete_reg_hkcu()
+                                            else:
+                                                answer_function_hkcu()
+                            hkcu_after_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2013', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                if internet() is False or "en" in current_lang_code:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_CURRENT_USER' not in record_value[0]):
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                        if ('HKEY_LOCAL_MACHINE' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2', 'allowdde'])):
+                                                delete_reg()
+                                            else:
+                                                answer_function()
+                                else:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_CURRENT_USER' not in record_value[0]):
+                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                        if ('HKEY_LOCAL_MACHINE' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2', 'allowdde'])):
+                                                delete_reg()
+                                            else:
+                                                answer_function()
+                            print(f"Your .bat script saved: {abs_dir}")
+                            with open(filename + ".bat", 'a') as bat_file:
+                                bat_file.write(f'echo Mission Accomplished! :)\n')
+                                bat_file.write(f'pause\n')
+                            break
+                        case _:
+                            print('Invalid input. Input must be "a" or "m" \n')
+            case '2016':
+                while True:
+                    gen_choice = str(input("Auto or Manual generation of .bat script (a/m): "))
+                    match gen_choice:
+                        case 'a':
+                            hkcu_before_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2016', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                for record in sql_cursor:         
+                                    record_value = record
+                                    if ('HKEY_CURRENT_USER' in record_value[0]):
+                                        if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2', 'allowdde'])):
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Deleting "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                                bat_file.write(f'\treg delete "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                        else:
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                bat_file.write(f'\treg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                            hkcu_after_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2016', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                for record in sql_cursor:         
+                                    record_value = record
+                                    if ('HKEY_LOCAL_MACHINE' in record_value[0]):
+                                        if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2', 'allowdde'])):
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Deleting "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                                bat_file.write(f'\treg delete "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                        else:
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                bat_file.write(f'\treg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                            print(f"Your .bat script saved: {abs_dir}")
+                            with open(filename + ".bat", 'a') as bat_file:
+                                bat_file.write(f'echo Mission Accomplished! :)\n')
+                                bat_file.write(f'pause\n')
+                            break
+                        case 'm':
+                            hkcu_before_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2016', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                if internet() is False or "en" in current_lang_code:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_LOCAL_MACHINE' not in record_value[0]):
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                        if ('HKEY_CURRENT_USER' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2', 'allowdde'])):
+                                                delete_reg_hkcu()
+                                            else:
+                                                answer_function_hkcu()
+                                else:
+                                    for record in sql_cursor:         
+                                        record_value = record                                        
+                                        if ('HKEY_LOCAL_MACHINE' not in record_value[0]):
+                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                        if ('HKEY_CURRENT_USER' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2', 'allowdde'])):
+                                                delete_reg_hkcu()
+                                            else:
+                                                answer_function_hkcu()
+                            hkcu_after_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2016', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                if internet() is False or "en" in current_lang_code:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_CURRENT_USER' not in record_value[0]):
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                        if ('HKEY_LOCAL_MACHINE' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2', 'allowdde'])):
+                                                delete_reg()
+                                            else:
+                                                answer_function()
+                                else:
+                                    for record in sql_cursor:         
+                                        record_value = record                                        
+                                        if ('HKEY_CURRENT_USER' not in record_value[0]):
+                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                        if ('HKEY_LOCAL_MACHINE' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2', 'allowdde'])):
+                                                delete_reg()
+                                            else:
+                                                answer_function()
+                            print(f"Your .bat script saved: {abs_dir}")
+                            with open(filename + ".bat", 'a') as bat_file:
+                                bat_file.write(f'echo Mission Accomplished! :)\n')
+                                bat_file.write(f'pause\n')
+                            break
+                        case _:
+                            print('Invalid input. Input must be "a" or "m" \n')
+            case '365':
+                while True:
+                    gen_choice = str(input("Auto or Manual generation of .bat script (a/m): "))
+                    match gen_choice:
+                        case 'a':
+                            hkcu_before_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2016', 'Office365', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                for record in sql_cursor:         
+                                    record_value = record
+                                    if ('HKEY_CURRENT_USER' in record_value[0]):
+                                        if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2', 'allowdde'])):
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Deleting "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                                bat_file.write(f'\treg delete "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                        else:
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                bat_file.write(f'\treg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                            hkcu_after_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2016', 'Office365', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                for record in sql_cursor:         
+                                    record_value = record
+                                    if ('HKEY_LOCAL_MACHINE' in record_value[0]):
+                                        if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2', 'allowdde'])):
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Deleting "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                                bat_file.write(f'\treg delete "{record_value[0]}" /v "{record_value[1]}" /f\n')
+                                        else:
+                                            with open(filename + ".bat", 'a') as bat_file:
+                                                bat_file.write(f'\techo Applying "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                                                bat_file.write(f'\treg add "{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f\n')
+                            print(f"Your .bat script saved: {abs_dir}")
+                            with open(filename + ".bat", 'a') as bat_file:
+                                bat_file.write(f'echo Mission Accomplished! :)\n')
+                                bat_file.write(f'pause\n')
+                            break
+                        case 'm':
+                            hkcu_before_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2016', 'Office365', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                if internet() is False or "en" in current_lang_code:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_LOCAL_MACHINE' not in record_value[0]):
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                        if ('HKEY_CURRENT_USER' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2', 'allowdde'])):
+                                                delete_reg_hkcu()
+                                            else:
+                                                answer_function_hkcu()
+                                else:
+                                    for record in sql_cursor:         
+                                        record_value = record                                        
+                                        if ('HKEY_LOCAL_MACHINE' not in record_value[0]):
+                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                        if ('HKEY_CURRENT_USER' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2', 'allowdde'])):
+                                                delete_reg_hkcu()
+                                            else:
+                                                answer_function_hkcu()
+                            hkcu_after_param()
+                            with sqlite3.connect(db_file) as sqlite_conn:
+                                sql_request = """SELECT reg_key, reg_value, value_type, parameter, description FROM Main WHERE profile IN ('Office2016', 'Office365', 'OfficeHKLM')"""
+                                sql_cursor = sqlite_conn.execute(sql_request)
+                                if internet() is False or "en" in current_lang_code:
+                                    for record in sql_cursor:         
+                                        record_value = record
+                                        if ('HKEY_CURRENT_USER' not in record_value[0]):
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                        if ('HKEY_LOCAL_MACHINE' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2', 'allowdde'])):
+                                                delete_reg()
+                                            else:
+                                                answer_function()
+                                else:
+                                    for record in sql_cursor:         
+                                        record_value = record                                        
+                                        if ('HKEY_CURRENT_USER' not in record_value[0]):
+                                            translated = GoogleTranslator(source='auto', target=current_lang_code).translate(record_value[4])
+                                            print(f'"{record_value[0]}" /v "{record_value[1]}" /t {record_value[2]} /d "{record_value[3]}" /f \n {record_value[4]} \n')
+                                        if ('HKEY_LOCAL_MACHINE' in record_value[0]):
+                                            if ("TrustedAddins" in record_value[0]) or (any(keyword in record_value[1] for keyword in ['OutlookSecureTempFolder', 'FileExtensionsRemoveLevel1', 'FileExtensionsRemoveLevel2', 'allowdde'])):
+                                                delete_reg()
+                                            else:
+                                                answer_function()
+                            print(f"Your .bat script saved: {abs_dir}")
+                            with open(filename + ".bat", 'a') as bat_file:
+                                bat_file.write(f'echo Mission Accomplished! :)\n')
+                                bat_file.write(f'pause\n')
+                            break
+                        case _:
+                            print('Invalid input. Input must be "a" or "m" \n')
+            case 'none':
+                print("Returning...")
+                break
+            case _:
+                print('Invalid input. Input must be "2003", "2007", "2010", "2013", "2016", "365" or "none" \n')
+        break
+                
+                
             
 def internet(host="8.8.8.8", port=53, timeout=5):
     """

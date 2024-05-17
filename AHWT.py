@@ -5,6 +5,7 @@ import module_eight
 import module_eightone
 import module_ten
 import module_eleven
+import module_office
 
 print("""
       
@@ -27,7 +28,8 @@ def menu():
     print("[5] Windows 8.1 Hardening\n")
     print("[6] Windows 10 Hardening\n")
     print("[7] Windows 11 Hardening\n")
-    print("[8] Exit\n")
+    print("[8] MS Office Hardening\n")
+    print("[9] Exit\n")
     
 while True:
     menu()
@@ -48,7 +50,9 @@ while True:
         case '7':
             module_eleven.start_module()
         case '8':
+            module_office.start_module()
+        case '9':
             print("Have a nice day!")
             break
         case _:
-            print("Wrong choice. Choose from 1 to 8...")
+            print("Wrong choice. Choose from 1 to 9...")
