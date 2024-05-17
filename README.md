@@ -1,5 +1,6 @@
 # AHWT - another hardening tool for Windows operating systems.
-![image](https://github.com/n0rthl1ght/ahwt/assets/92512883/f60dd952-296c-4574-9129-88e59e66e352)
+![image](https://github.com/n0rthl1ght/ahwt/assets/92512883/47805ad6-295c-41ff-929a-af4adc7e9636)
+
 
 ## Description (on [RUS](https://github.com/n0rthl1ght/ahwt/blob/main/README_RU.md))
 Program is a script generator with collection of parameters and recommendations from CIS Benchmarks and DoD STIGs with some adjusments.
@@ -50,6 +51,13 @@ For every operating system were made additional profiles that you can generate s
    - BitLocker
    - MS Edge
    - Next Generation Security
+8. MS Office
+   - MS Office 2003
+   - MS Office 2007
+   - MS Office 2010
+   - MS Office 2013
+   - MS Office 2016 (including 2019 & 2021)
+   - MS Office 365
 
 > [!WARNING]
 > ShieldUp mode block all incoming connections, including those in the list of allowed apps setting found in either the Windows Settings app or Control Panel
