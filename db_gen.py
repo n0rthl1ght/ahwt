@@ -4,6 +4,8 @@ import locale
 from deep_translator import GoogleTranslator
 import socket
 import os
+import re
+import ipaddress
 
 from pathlib import Path
 
@@ -111,6 +113,45 @@ def gen_decision():
         bat_file.write("echo Disabling optional services...\n")
         for feature in ["MicrosoftWindowsPowerShellV2Root", "MicrosoftWindowsPowerShellV2", "SMB1Protocol"]:
             bat_file.write(f'powershell "Disable-WindowsOptionalFeature -Online -FeatureName {feature} -norestart"\n')
+            
+    def write_netconns(bat_file):
+        bat_file.write("echo Blocking Win32 binaries from making network connections when they shouldn't...\n")
+        if "xp" in str(db_file):
+            bat_file.write(f'netsh firewall add allowedprogram program="%systemroot%\system32\\notepad.exe" name="Block Notepad.exe netconns" mode=disable profile=ALL\n')
+            bat_file.write(f'netsh firewall add allowedprogram program="%systemroot%\system32\\regsvr32.exe" name="Block regsvr32.exe netconns" mode=disable profile=ALL\n')
+            bat_file.write(f'netsh firewall add allowedprogram program="%systemroot%\system32\calc.exe" name="Block calc.exe netconns" mode=disable profile=ALL\n')
+            bat_file.write(f'netsh firewall add allowedprogram program="%systemroot%\system32\mshta.exe" name="Block mshta.exe netconns" mode=disable profile=ALL\n')
+            bat_file.write(f'netsh firewall add allowedprogram program="%systemroot%\system32\wscript.exe" name="Block wscript.exe netconns" mode=disable profile=ALL\n')
+            bat_file.write(f'netsh firewall add allowedprogram program="%systemroot%\system32\cscript.exe" name="Block cscript.exe netconns" mode=disable profile=ALL\n')
+            bat_file.write(f'netsh firewall add allowedprogram program="%systemroot%\system32\hh.exe" name="Block hh.exe netconns" mode=disable profile=ALL\n')
+        elif "vista" in str(db_file):
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block regsvr32.exe netconns" program="%systemroot%\system32\\regsvr32.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block Notepad.exe netconns" program="%systemroot%\system32\\notepad.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block calc.exe netconns" program="%systemroot%\system32\calc.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block mshta.exe netconns" program="%systemroot%\system32\mshta.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block wscript.exe netconns" program="%systemroot%\system32\wscript.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block cscript.exe netconns" program="%systemroot%\system32\cscript.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block hh.exe netconns" program="%systemroot%\system32\hh.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+        elif any(keyword in str(db_file) for keyword in ['seven', 'eightzero', 'eightone']):
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block regsvr32.exe netconns" program="%systemroot%\system32\\regsvr32.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block Notepad.exe netconns" program="%systemroot%\system32\\notepad.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block calc.exe netconns" program="%systemroot%\system32\calc.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block mshta.exe netconns" program="%systemroot%\system32\mshta.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block wscript.exe netconns" program="%systemroot%\system32\wscript.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block cscript.exe netconns" program="%systemroot%\system32\cscript.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block hh.exe netconns" program="%systemroot%\system32\hh.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block conhost.exe netconns" program="%systemroot%\system32\conhost.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+        else:
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block regsvr32.exe netconns" program="%systemroot%\system32\\regsvr32.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block Notepad.exe netconns" program="%systemroot%\system32\\notepad.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block calc.exe netconns" program="%systemroot%\system32\calc.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block mshta.exe netconns" program="%systemroot%\system32\mshta.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block wscript.exe netconns" program="%systemroot%\system32\wscript.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block cscript.exe netconns" program="%systemroot%\system32\cscript.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block hh.exe netconns" program="%systemroot%\system32\hh.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block conhost.exe netconns" program="%systemroot%\system32\conhost.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            bat_file.write(f'netsh advfirewall firewall add rule name="Block runscripthelper.exe netconns" program="%systemroot%\system32\\runscripthelper.exe" protocol=tcp dir=out enable=yes action=block profile=any\n')
+            
 
     def write_common_content(bat_file, db_file, filename, osname):
         db_file_str = str(db_file)
@@ -126,6 +167,7 @@ def gen_decision():
         write_audit_policies(bat_file, db_file_str)
         if any(keyword in db_file_str for keyword in ['seven', 'eightzero', 'eightone', 'ten', 'eleven']):
             write_optional_services(bat_file)
+        write_netconns(bat_file)
         bat_file.write(f'\necho Adding register values...\n')
 
     while True:
@@ -285,8 +327,315 @@ def firewall_reg():
                         if "DoNotAllowExceptions" in reg_value and shieldup_input == 'n':
                             continue
                         write_to_bat_file(bat_file, reg_key, reg_value, value_type, parameter)
+        
+        ### Adding new FW rules ###
+                        
+        def write_rule(rule_name, rule):
+            with open(filename + ".bat", 'a') as bat_file:
+                bat_file.write(f"echo Applying rule '{rule_name}'...\n")
+                bat_file.write(f"{rule}\n")
+                
+
+        def validate_program_path(program_path):
+            local_path_regex = r'^[a-zA-Z]:\\(?:[^\\\/:*?"<>|\r\n]+\\)*[^\\\/:*?"<>|\r\n]+\.(exe|bat|ps1)$'
+            network_path_regex = r'^\\\\[^\\\/:*?"<>|\r\n]+\\(?:[^\\\/:*?"<>|\r\n]+\\)*[^\\\/:*?"<>|\r\n]+\.(exe|bat|ps1)$'
+            return re.match(local_path_regex, program_path) or re.match(network_path_regex, program_path)
+
+        def validate_ips(ip_str, allow_localsubnet=True):
+            ip_str = ip_str.replace(' ', '')  # Remove any spaces
+            ips = ip_str.split(',')
+            for ip in ips:
+                if allow_localsubnet and ip.lower() == "localsubnet":
+                    continue
+                try:
+                    if '-' in ip:
+                        start_ip, end_ip = ip.split('-')
+                        ipaddress.ip_address(start_ip.strip())
+                        ipaddress.ip_address(end_ip.strip())
+                    else:
+                        ipaddress.ip_network(ip.strip(), strict=False)
+                except ValueError:
+                    return False
+            return True
+        
+        def validate_ip_xp(ip):
+            ip = ip.replace(' ', '')  # Remove any spaces
+            ip_parts = ip.split(',')
+            for part in ip_parts:
+                if part.lower() == "localsubnet":
+                    continue
+                try:
+                    if '/' in part:
+                        ipaddress.ip_network(part, strict=False)
+                    else:
+                        ipaddress.ip_address(part)
+                except ValueError:
+                    return False
+            return True
+        
+
+        def validate_ports(port_str):
+            if port_str == '':
+                return True
+            port_str = port_str.replace(' ', '')  # Remove any spaces
+            ports = port_str.split(',')
+            for port in ports:
+                if '-' in port:
+                    start_port, end_port = port.split('-')
+                    if not (start_port.isdigit() and end_port.isdigit() and 1 <= int(start_port) <= 65535 and 1 <= int(end_port) <= 65535 and int(start_port) <= int(end_port)):
+                        return False
+                elif not (port.isdigit() and 1 <= int(port) <= 65535):
+                    return False
+            return True
+        
+        def validate_port_xp(port):
+            if port.isdigit() and 1 <= int(port) <= 65535:
+                return True
+            return False
+
+        def get_valid_input(prompt, valid_options=None):
+            while True:
+                user_input = input(prompt).strip().lower()
+                if valid_options:
+                    if user_input in valid_options:
+                        return user_input
+                    print(f"Please enter one of the following: {', '.join(valid_options)}")
+                else:
+                    return user_input
+                
+        
+        def get_valid_input_xp(prompt, valid_options, allow_empty=False, default_value=None):
+            while True:
+                user_input = input(prompt).strip().lower()
+                if allow_empty and user_input == '':
+                    return default_value
+                if user_input in valid_options:
+                    return user_input
+                if allow_empty:
+                    print(f"Please enter one of the following: {', '.join(valid_options)} or press Enter for default ({default_value.upper()})")
+                else:
+                    print(f"Please enter one of the following: {', '.join(valid_options)}")
+
+        def sanitize_program_path(program_path):
+            return program_path.replace(' ', '_').replace(':', '').replace('\\', '_')
+
+        def add_firewall_rule():
+            
+            if "xp" in str(db_file):
+                while True:
+                    add_rule = get_valid_input_xp("Do you want to add a new firewall rule? (y/n): ", ['y', 'n'])
+                    if add_rule == 'n':
+                        print("Exiting.")
+                        break
+
+                    mode = get_valid_input_xp("Specify the action mode (enable/disable, default is ENABLE): ", ['enable', 'disable'], allow_empty=True, default_value='enable')
+                    rule_type = get_valid_input_xp("What will be added - port or program? (port/program): ", ['port', 'program'])
+
+                    port, program_path, protocol, ip_scope, ip_address = None, None, None, None, None
+
+                    if rule_type == 'port':
+                        port = input("Enter a single port number (e.g., 80): ").strip()
+                        while not validate_port_xp(port):
+                            print("Invalid port. Please enter a valid single port number.")
+                            port = input("Enter a single port number (e.g., 80): ").strip()
+
+                        protocol = get_valid_input_xp("Specify the protocol (TCP/UDP/ALL): ", ['tcp', 'udp', 'all']).upper()
+
+                        ip_scope = get_valid_input_xp("Specify the scope (all/subnet/custom, default is ALL): ", ['all', 'subnet', 'custom'], allow_empty=True, default_value='all')
+                        if ip_scope == 'custom':
+                            ip_address = input("Enter IP addresses (comma separated, e.g., '192.168.0.1, 192.168.1.0/24, localsubnet'): ").replace(' ', '').strip()
+                            while not validate_ip_xp(ip_address):
+                                print("Please enter valid IP addresses (comma separated, e.g., '192.168.0.1, 192.168.1.0/24, localsubnet').")
+                                ip_address = input("Enter IP addresses (comma separated, e.g., '192.168.0.1, 192.168.1.0/24, localsubnet'): ").replace(' ', '').strip()
+
+                    if rule_type == 'program':
+                        program_path = input("Enter the path to the program (.exe, .bat, .ps1): ").strip()
+                        while not validate_program_path(program_path):
+                            print("Please enter a valid path to the program with extension .exe, .bat, или .ps1.")
+                            program_path = input("Enter the path to the program (.exe, .bat, .ps1): ").strip()
+
+                        ip_scope = get_valid_input_xp("Specify the scope (all/subnet/custom, default is ALL): ", ['all', 'subnet', 'custom'], allow_empty=True, default_value='all')
+                        if ip_scope == 'custom':
+                            ip_address = input("Enter IP addresses (comma separated, e.g., '192.168.0.1, 192.168.1.0/24, localsubnet'): ").replace(' ', '').strip()
+                            while not validate_ip_xp(ip_address):
+                                print("Please enter valid IP addresses (comma separated, e.g., '192.168.0.1, 192.168.1.0/24, localsubnet').")
+                                ip_address = input("Enter IP addresses (comma separated, e.g., '192.168.0.1, 192.168.1.0/24, localsubnet'): ").replace(' ', '').strip()
+
+                    profile = get_valid_input_xp("For which profile will the rule be used? (all/domain/standard, default is CURRENT): ", ['all', 'domain', 'standard'], allow_empty=True, default_value='current')
+
+                    rule_name = f"{mode}"
+                    if port:
+                        rule_name += f"_{port}_{protocol}"
+                    if program_path:
+                        sanitized_program_path = sanitize_program_path(program_path)
+                        rule_name += f"_{sanitized_program_path}"
+                    rule_name += f"_{profile}"
+
+                    if rule_type == 'program':
+                        command = f"netsh firewall add allowedprogram program=\"{program_path}\" name=\"{rule_name}\""
+                        if mode:
+                            command += f" mode={mode.upper()}"
+                        if profile:
+                            command += f" profile={profile.upper()}"
+                        if ip_scope == 'custom' and ip_address:
+                            command += f" scope=custom addresses={ip_address}"
+                        elif ip_scope == 'subnet':
+                            command += f" scope=subnet"
+                        elif ip_scope == 'all':
+                            command += f" scope=all"
+                    else:
+                        command = f"netsh firewall add portopening protocol={protocol} port={port} name=\"{rule_name}\""
+                        if mode:
+                            command += f" mode={mode.upper()}"
+                        if profile:
+                            command += f" profile={profile.upper()}"
+                        if ip_scope == 'custom' and ip_address:
+                            command += f" scope=custom addresses={ip_address}"
+                        elif ip_scope == 'subnet':
+                            command += f" scope=subnet"
+                        elif ip_scope == 'all':
+                            command += f" scope=all"
+
+                    write_rule(rule_name, command)
+                    print(f"Rule '{rule_name}' has been added to the file and will be applied later.")
+                    
+            else:
+                while True:
+                    add_rule = get_valid_input("Do you want to add a new firewall rule? (y/n): ", ['y', 'n'])
+                    if add_rule == 'n':
+                        print("Exiting.")
+                        break
+
+                    direction = get_valid_input("Specify the action direction (in/out): ", ['in', 'out'])
+                    rule_type = get_valid_input("What will be added - IP address, port, or program? (ip/port/program): ", ['ip', 'port', 'program'])
+
+                    ip_type, ip_addresses, local_ips, local_ports, remote_ports, program_path, protocol = None, None, None, None, None, None, None
+
+                    if rule_type == 'ip':
+                        ip_type = get_valid_input("Specify IP type (localip/remoteip): ", ['localip', 'remoteip'])
+                        if ip_type == 'remoteip':
+                            ip_addresses = input("Enter remote IP address(es) (or range, or with mask, or 'localsubnet'), separated by commas: ").replace(' ', '').strip()
+                            while not validate_ips(ip_addresses):
+                                print("Please enter valid remote IP address(es), range, network, or 'localsubnet'.")
+                                ip_addresses = input("Enter remote IP address(es) (or range, or with mask, or 'localsubnet'), separated by commas: ").replace(' ', '').strip()
+                        elif ip_type == 'localip':
+                            local_ips = input("Enter local IP address(es) (or range, or with mask), separated by commas: ").replace(' ', '').strip()
+                            while not validate_ips(local_ips, allow_localsubnet=False):
+                                print("Please enter valid local IP address(es), range, or network.")
+                                local_ips = input("Enter local IP address(es) (or range, or with mask), separated by commas: ").replace(' ', '').strip()
+
+                        while True:
+                            local_ports = input("Enter local port number(s) or a range (default - ANY): ").replace(' ', '').strip()
+                            if local_ports == '' or validate_ports(local_ports):
+                                break
+                            else:
+                                print("Please enter valid local port number(s) or a range (e.g., 80,443,1000-2000).")
+
+                        if local_ports:
+                            protocol = get_valid_input("Specify the protocol (TCP/UDP): ", ['tcp', 'udp']).upper()
+
+                        while True:
+                            remote_ports = input("Enter remote port number(s) or a range (default - ANY): ").replace(' ', '').strip()
+                            if remote_ports == '' or validate_ports(remote_ports):
+                                break
+                            else:
+                                print("Please enter valid remote port number(s) or a range (e.g., 80,443,1000-2000).")
+
+                    if rule_type == 'port':
+                        while True:
+                            local_ports = input("Enter local port number(s) or a range (default - ANY): ").replace(' ', '').strip()
+                            if local_ports == '' or validate_ports(local_ports):
+                                break
+                            else:
+                                print("Invalid ports. Please enter valid local port number(s) or a range (e.g., 80,443,1000-2000).")
+                        
+                        if local_ports:
+                            protocol = get_valid_input("Specify the protocol (TCP/UDP): ", ['tcp', 'udp']).upper()
+
+                        while True:
+                            remote_ports = input("Enter remote port number(s) or a range (default - ANY): ").replace(' ', '').strip()
+                            if remote_ports == '' or validate_ports(remote_ports):
+                                break
+                            else:
+                                print("Invalid ports. Please enter valid remote port number(s) or a range (e.g., 80,443,1000-2000).")
+
+                        ip_addresses = input("Enter remote IP address(es) (or range, or with mask, or 'localsubnet'), separated by commas (default - ANY): ").replace(' ', '').strip()
+                        if ip_addresses and not validate_ips(ip_addresses):
+                            print("Please enter valid remote IP address(es), range, network, or 'localsubnet'.")
+                            ip_addresses = input("Enter remote IP address(es) (or range, or with mask, or 'localsubnet'), separated by commas (default - ANY): ").replace(' ', '').strip()
+
+                        local_ips = input("Enter local IP address(es) (or range, or with mask), separated by commas (default - ANY): ").replace(' ', '').strip()
+                        if local_ips and not validate_ips(local_ips, allow_localsubnet=False):
+                            print("Please enter valid local IP address(es), range, or network.")
+                            local_ips = input("Enter local IP address(es) (or range, or with mask), separated by commas (default - ANY): ").replace(' ', '').strip()
+
+                    if rule_type == 'program':
+                        program_path = input("Enter the path to the program (.exe, .bat, .ps1): ").strip()
+                        while not validate_program_path(program_path):
+                            print("Please enter a valid path to the program with extension .exe, .bat, or .ps1.")
+                            program_path = input("Enter the path to the program (.exe, .bat, .ps1): ").strip()
+
+                        while True:
+                            local_ports = input("Enter local port number(s) or a range (default - ANY): ").replace(' ', '').strip()
+                            if local_ports == '' or validate_ports(local_ports):
+                                break
+                            else:
+                                print("Please enter valid local port number(s) or a range (e.g., 80,443,1000-2000).")
+
+                        if local_ports:
+                            protocol = get_valid_input("Specify the protocol (TCP/UDP): ", ['tcp', 'udp']).upper()
+
+                        while True:
+                            remote_ports = input("Enter remote port number(s) or a range (default - ANY): ").replace(' ', '').strip()
+                            if remote_ports == '' or validate_ports(remote_ports):
+                                break
+                            else:
+                                print("Please enter valid remote port number(s) or a range (e.g., 80,443,1000-2000).")
+
+                        ip_addresses = input("Enter remote IP address(es) (or range, or with mask, or 'localsubnet'), separated by commas (default - ANY): ").replace(' ', '').strip()
+                        if ip_addresses and not validate_ips(ip_addresses):
+                            print("Please enter valid remote IP address(es), range, network, or 'localsubnet'.")
+                            ip_addresses = input("Enter remote IP address(es) (or range, or with mask, or 'localsubnet'), separated by commas (default - ANY): ").replace(' ', '').strip()
+
+                        local_ips = input("Enter local IP address(es) (or range, or with mask), separated by commas (default - ANY): ").replace(' ', '').strip()
+                        if local_ips and not validate_ips(local_ips, allow_localsubnet=False):
+                            print("Please enter valid local IP address(es), range, or network.")
+                            local_ips = input("Enter local IP address(es) (or range, or with mask), separated by commas (default - ANY): ").replace(' ', '').strip()
+
+                    action = get_valid_input("Specify the action (block/allow): ", ['block', 'allow'])
+                    profile = get_valid_input("For which profile will the rule be used? (domain/private/public/any): ", ['domain', 'private', 'public', 'any'])
+
+                    rule_name = f"{action}_{direction}"
+                    if ip_addresses:
+                        rule_name += f"_{ip_addresses.replace(',', '_').replace('-', '_')}"
+                    if local_ips:
+                        rule_name += f"_{local_ips.replace(',', '_').replace('-', '_')}"
+                    if local_ports:
+                        rule_name += f"_{local_ports.replace(',', '_').replace('-', '_')}"
+                    if remote_ports:
+                        rule_name += f"_{remote_ports.replace(',', '_').replace('-', '_')}"
+                    if program_path:
+                        sanitized_program_path = sanitize_program_path(program_path)
+                        rule_name += f"_{sanitized_program_path}"
+                    rule_name += f"_{profile}"
+
+                    command = f"netsh advfirewall firewall add rule name=\"{rule_name}\" dir={direction} action={action} profile={profile}"
+                    if ip_addresses:
+                        command += f' remoteip="{ip_addresses}"'
+                    if local_ips:
+                        command += f' localip="{local_ips}"'
+                    if local_ports:
+                        command += f' localport="{local_ports}" protocol={protocol}'
+                    if remote_ports:
+                        command += f' remoteport="{remote_ports}"'
+                    if program_path:
+                        command += f' program="{program_path}" enable=yes'
+
+                    write_rule(rule_name, command)
+                    print(f"Rule '{rule_name}' has been added to the file and will be applied later.")
 
         process_firewall()
+        add_firewall_rule()
 
 def ng_reg():
     registry_operations('Next Generation', filename, db_file, current_lang_code)
