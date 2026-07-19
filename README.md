@@ -2,6 +2,8 @@
 
 [RUS](README_RU.md)
 
+<img width="630" height="273" alt="image" src="https://github.com/user-attachments/assets/9868bd9c-729e-44e6-95f5-7131f4d378f3" />
+
 Another Hardening Windows Tool is a desktop GUI application that generates Windows hardening `.bat` scripts from curated SQLite databases and security templates.
 
 This repository is a Flutter/Dart rebuild of the original Python-based project. The goal of this repo is to keep the release available in editable sources, preserve the original database/template workflow, and provide a usable cross-platform GUI for generating scripts.
@@ -9,6 +11,8 @@ This repository is a Flutter/Dart rebuild of the original Python-based project. 
 ## What It Does
 
 AHWT generates batch scripts for applying Windows and Microsoft Office hardening settings. The settings are stored in SQLite databases and are grouped by operating system, hardening level, and optional addon profile.
+
+<img width="1122" height="857" alt="image" src="https://github.com/user-attachments/assets/3850eabf-c7c3-45a1-b40d-6cffc2122d77" />
 
 The generated scripts can include:
 
@@ -21,6 +25,8 @@ The generated scripts can include:
 - Microsoft Office hardening settings
 
 Generated output is always a `.bat` file intended to be reviewed and then run on the target Windows machine.
+
+EMET installer you can get in release section
 
 ## Supported Targets
 
