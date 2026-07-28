@@ -184,11 +184,12 @@ bool shouldDeleteOfficeEntry(
   return false;
 }
 
-bool shouldDeleteXpDefaultPasswordEntry({
+bool shouldDeleteXpOrVistaDefaultPasswordEntry({
   required String osname,
   required String regValue,
 }) {
-  return osname == 'xp' && regValue == 'DefaultPassword';
+  return (osname == 'xp' || osname == 'vista') &&
+      regValue == 'DefaultPassword';
 }
 
 String buildRegistryCommand({
@@ -681,7 +682,7 @@ Future<String> generateBatFileOSAuto(BatParams batParameters) async {
           if (recordValue4.contains('POSIX')) {
             action = 'Deleting';
             command = 'delete';
-          } else if (shouldDeleteXpDefaultPasswordEntry(
+          } else if (shouldDeleteXpOrVistaDefaultPasswordEntry(
             osname: osname,
             regValue: recordValue1,
           )) {
@@ -689,7 +690,7 @@ Future<String> generateBatFileOSAuto(BatParams batParameters) async {
             command = 'delete';
           }
 
-          if (shouldDeleteXpDefaultPasswordEntry(
+          if (shouldDeleteXpOrVistaDefaultPasswordEntry(
             osname: osname,
             regValue: recordValue1,
           )) {
@@ -735,7 +736,7 @@ Future<String> generateBatFileOSAuto(BatParams batParameters) async {
           if (recordValue4.contains('POSIX')) {
             action = 'Deleting';
             command = 'delete';
-          } else if (shouldDeleteXpDefaultPasswordEntry(
+          } else if (shouldDeleteXpOrVistaDefaultPasswordEntry(
             osname: osname,
             regValue: recordValue1,
           )) {
@@ -743,7 +744,7 @@ Future<String> generateBatFileOSAuto(BatParams batParameters) async {
             command = 'delete';
           }
 
-          if (shouldDeleteXpDefaultPasswordEntry(
+          if (shouldDeleteXpOrVistaDefaultPasswordEntry(
             osname: osname,
             regValue: recordValue1,
           )) {
@@ -1112,7 +1113,7 @@ if (hardeninType!='Microsoft Office') {
         } else if (recordValue4.contains('POSIX')) {
           action = 'Deleting';
           command = 'delete';
-        } else if (shouldDeleteXpDefaultPasswordEntry(
+        } else if (shouldDeleteXpOrVistaDefaultPasswordEntry(
           osname: osname,
           regValue: recordValue1,
         )) {
@@ -1144,7 +1145,7 @@ if (hardeninType!='Microsoft Office') {
                 parameter: recordValue3,
               ),
             );
-          } else if (shouldDeleteXpDefaultPasswordEntry(
+          } else if (shouldDeleteXpOrVistaDefaultPasswordEntry(
             osname: osname,
             regValue: recordValue1,
           )) {
@@ -1204,7 +1205,7 @@ if (hardeninType!='Microsoft Office') {
           } else if (recordValue4.contains('POSIX')) {
             action = 'Deleting';
             command = 'delete';
-          } else if (shouldDeleteXpDefaultPasswordEntry(
+          } else if (shouldDeleteXpOrVistaDefaultPasswordEntry(
             osname: osname,
             regValue: recordValue1,
           )) {
@@ -1232,7 +1233,7 @@ if (hardeninType!='Microsoft Office') {
                 parameter: recordValue3,
               )}',
             );
-          } else if (shouldDeleteXpDefaultPasswordEntry(
+          } else if (shouldDeleteXpOrVistaDefaultPasswordEntry(
             osname: osname,
             regValue: recordValue1,
           )) {
