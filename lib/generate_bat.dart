@@ -184,6 +184,13 @@ bool shouldDeleteOfficeEntry(
   return false;
 }
 
+bool shouldDeleteXpDefaultPasswordEntry({
+  required String osname,
+  required String regValue,
+}) {
+  return osname == 'xp' && regValue == 'DefaultPassword';
+}
+
 String buildRegistryCommand({
   required String command,
   required String regKey,
@@ -674,12 +681,43 @@ Future<String> generateBatFileOSAuto(BatParams batParameters) async {
           if (recordValue4.contains('POSIX')) {
             action = 'Deleting';
             command = 'delete';
+          } else if (shouldDeleteXpDefaultPasswordEntry(
+            osname: osname,
+            regValue: recordValue1,
+          )) {
+            action = 'Deleting';
+            command = 'delete';
           }
 
-          batStrings.add(
-              'echo $action "$recordValue0" /v "$recordValue1" /t $recordValue2 /d "$recordValue3" /f');
-          batStrings.add(
-              'reg $command "$recordValue0" /v "$recordValue1" /t $recordValue2 /d "$recordValue3" /f');
+          if (shouldDeleteXpDefaultPasswordEntry(
+            osname: osname,
+            regValue: recordValue1,
+          )) {
+            batStrings.add(
+              buildRegistryEcho(
+                indent: '',
+                action: action,
+                regKey: recordValue0,
+                regValue: recordValue1,
+                valueType: recordValue2,
+                parameter: recordValue3,
+              ),
+            );
+            batStrings.add(
+              buildRegistryCommand(
+                command: command,
+                regKey: recordValue0,
+                regValue: recordValue1,
+                valueType: recordValue2,
+                parameter: recordValue3,
+              ),
+            );
+          } else {
+            batStrings.add(
+                'echo $action "$recordValue0" /v "$recordValue1" /t $recordValue2 /d "$recordValue3" /f');
+            batStrings.add(
+                'reg $command "$recordValue0" /v "$recordValue1" /t $recordValue2 /d "$recordValue3" /f');
+          }
         }
       }
 
@@ -697,12 +735,43 @@ Future<String> generateBatFileOSAuto(BatParams batParameters) async {
           if (recordValue4.contains('POSIX')) {
             action = 'Deleting';
             command = 'delete';
+          } else if (shouldDeleteXpDefaultPasswordEntry(
+            osname: osname,
+            regValue: recordValue1,
+          )) {
+            action = 'Deleting';
+            command = 'delete';
           }
 
-          batStrings.add(
-              'echo $action "$recordValue0" /v "$recordValue1" /t $recordValue2 /d "$recordValue3" /f');
-          batStrings.add(
-              'reg $command "$recordValue0" /v "$recordValue1" /t $recordValue2 /d "$recordValue3" /f');
+          if (shouldDeleteXpDefaultPasswordEntry(
+            osname: osname,
+            regValue: recordValue1,
+          )) {
+            batStrings.add(
+              buildRegistryEcho(
+                indent: '',
+                action: action,
+                regKey: recordValue0,
+                regValue: recordValue1,
+                valueType: recordValue2,
+                parameter: recordValue3,
+              ),
+            );
+            batStrings.add(
+              buildRegistryCommand(
+                command: command,
+                regKey: recordValue0,
+                regValue: recordValue1,
+                valueType: recordValue2,
+                parameter: recordValue3,
+              ),
+            );
+          } else {
+            batStrings.add(
+                'echo $action "$recordValue0" /v "$recordValue1" /t $recordValue2 /d "$recordValue3" /f');
+            batStrings.add(
+                'reg $command "$recordValue0" /v "$recordValue1" /t $recordValue2 /d "$recordValue3" /f');
+          }
 
         }
         batStrings.add(endBatchHKU);
@@ -1043,6 +1112,12 @@ if (hardeninType!='Microsoft Office') {
         } else if (recordValue4.contains('POSIX')) {
           action = 'Deleting';
           command = 'delete';
+        } else if (shouldDeleteXpDefaultPasswordEntry(
+          osname: osname,
+          regValue: recordValue1,
+        )) {
+          action = 'Deleting';
+          command = 'delete';
         }
 
         if (recordValue0.contains('HKEY_CURRENT_USER')) {
@@ -1050,6 +1125,29 @@ if (hardeninType!='Microsoft Office') {
         }
         else {
           if (hardeninType == 'Microsoft Office') {
+            batStrings.add(
+              buildRegistryEcho(
+                indent: '',
+                action: action,
+                regKey: recordValue0,
+                regValue: recordValue1,
+                valueType: recordValue2,
+                parameter: recordValue3,
+              ),
+            );
+            batStrings.add(
+              buildRegistryCommand(
+                command: command,
+                regKey: recordValue0,
+                regValue: recordValue1,
+                valueType: recordValue2,
+                parameter: recordValue3,
+              ),
+            );
+          } else if (shouldDeleteXpDefaultPasswordEntry(
+            osname: osname,
+            regValue: recordValue1,
+          )) {
             batStrings.add(
               buildRegistryEcho(
                 indent: '',
@@ -1106,9 +1204,38 @@ if (hardeninType!='Microsoft Office') {
           } else if (recordValue4.contains('POSIX')) {
             action = 'Deleting';
             command = 'delete';
+          } else if (shouldDeleteXpDefaultPasswordEntry(
+            osname: osname,
+            regValue: recordValue1,
+          )) {
+            action = 'Deleting';
+            command = 'delete';
           }
 
           if (hardeninType == 'Microsoft Office') {
+            batStrings.add(
+              buildRegistryEcho(
+                indent: '\t',
+                action: action,
+                regKey: recordValue0,
+                regValue: recordValue1,
+                valueType: recordValue2,
+                parameter: recordValue3,
+              ),
+            );
+            batStrings.add(
+              '\t${buildRegistryCommand(
+                command: command,
+                regKey: recordValue0,
+                regValue: recordValue1,
+                valueType: recordValue2,
+                parameter: recordValue3,
+              )}',
+            );
+          } else if (shouldDeleteXpDefaultPasswordEntry(
+            osname: osname,
+            regValue: recordValue1,
+          )) {
             batStrings.add(
               buildRegistryEcho(
                 indent: '\t',
